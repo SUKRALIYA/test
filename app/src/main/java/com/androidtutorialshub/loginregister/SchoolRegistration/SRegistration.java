@@ -11,15 +11,22 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.activities.RequestHandler;
+import com.androidtutorialshub.loginregister.model.Employee;
+import com.androidtutorialshub.loginregister.model.categoryregist.CategoryRegistration;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +39,8 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
     private TextInputEditText textInputEditTextPhoneNumber;
     private AppCompatButton appCompatButtonRegister;
     private AppCompatTextView appCompatTextViewLoginLink;
+    private Spinner spinner;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +49,7 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_sregistration);
         initViews();
         initListeners();
+        new SpinnerData().execute();
     }
 
     /**
@@ -47,7 +57,7 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
      */
     private void initViews() {
 
-
+        spinner= findViewById(R.id.spinner);
         textInputEditTextSchoolName = (TextInputEditText) findViewById(R.id.textInputEditTextSchoolName);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
@@ -247,5 +257,47 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
 
         return matcher.matches();
 
+    }
+
+
+
+    class SpinnerData extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            //creating request handler object
+            RequestHandler requestHandler = new RequestHandler();
+
+
+            return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=registrationCategory");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Gson gson = new Gson();
+            CategoryRegistration categoryRegistration = gson.fromJson(s,CategoryRegistration.class);
+
+
+            final List<String> categories = new ArrayList<String>();
+            categories.add("Please Select");
+            for (int i = 0; i < categoryRegistration.getData().size(); i++) {
+                categories.add(categoryRegistration.getData().get(i).getCatFullName());
+            }
+            // Creating adapter for spinner
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(SRegistration.this,
+                    android.R.layout.simple_spinner_item, categories);
+
+            // Drop down layout style - list view with radio button
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // attaching data adapter to spinner
+            spinner.setAdapter(dataAdapter);
+        }
     }
 }

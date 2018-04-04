@@ -13,6 +13,7 @@ import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.SchoolRegistration.ForgetPasswordActivity;
 import com.androidtutorialshub.loginregister.SchoolRegistration.NotificationActivity;
 import com.androidtutorialshub.loginregister.SchoolRegistration.SLoginActivity;
+import com.androidtutorialshub.loginregister.SchoolRegistration.SRegistration;
 
 public class SplashActivity extends Activity {
 
@@ -29,7 +30,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 // This method will be executed once the timer is over
-                Intent i = new Intent(getApplicationContext(), ViewFacultyActivity.class);
+                Intent i = new Intent(getApplicationContext(), SRegistration.class);
                 startActivity(i);
                 finish();
             }
