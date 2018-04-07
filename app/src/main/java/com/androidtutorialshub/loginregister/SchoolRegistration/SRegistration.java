@@ -1,5 +1,6 @@
 package com.androidtutorialshub.loginregister.SchoolRegistration;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.activities.RequestHandler;
 import com.androidtutorialshub.loginregister.model.Employee;
+import com.androidtutorialshub.loginregister.model.SchoolName;
 import com.androidtutorialshub.loginregister.model.categoryregist.CategoryRegistration;
 import com.google.gson.Gson;
 
@@ -40,6 +43,7 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
     private AppCompatButton appCompatButtonRegister;
     private AppCompatTextView appCompatTextViewLoginLink;
     private Spinner spinner;
+    private  String categoriesText, selectedShortName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,12 +104,9 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
 
     private void registerUser() {
         final String sname = textInputEditTextSchoolName.getText().toString().trim();
-
         final String semail = textInputEditTextEmail.getText().toString().trim();
         final String spassword = textInputEditTextPassword.getText().toString().trim();
         final String phone_number = textInputEditTextPhoneNumber.getText().toString().trim();
-
-
         //first we will do the validations
         if (TextUtils.isEmpty(sname)) {
             textInputEditTextSchoolName.setError("Please enter school name");
@@ -165,11 +166,10 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
                 //creating request parameters
                 HashMap<String, String> params = new HashMap<>();
                 params.put("sname", sname);
-
                 params.put("semail", semail);
                 params.put("spassword", spassword);
                 params.put("phone_number", phone_number);
-
+                params.put("categories", selectedShortName);
 
                 //returing the response
                 return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=SRegistration", params);
@@ -267,8 +267,6 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
         protected String doInBackground(Void... voids) {
             //creating request handler object
             RequestHandler requestHandler = new RequestHandler();
-
-
             return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=registrationCategory");
         }
 
@@ -282,12 +280,19 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
             super.onPostExecute(s);
             Gson gson = new Gson();
             CategoryRegistration categoryRegistration = gson.fromJson(s,CategoryRegistration.class);
-
-
             final List<String> categories = new ArrayList<String>();
+            final List<SchoolName> schoolCategories = new ArrayList<>();
             categories.add("Please Select");
+            SchoolName schoolName1 = new SchoolName();
+            schoolName1.setCat_full_name("Please Select");
+            schoolName1.setCat_short_name("");
+            schoolCategories.add(schoolName1);
             for (int i = 0; i < categoryRegistration.getData().size(); i++) {
                 categories.add(categoryRegistration.getData().get(i).getCatFullName());
+                SchoolName schoolName = new SchoolName();
+                schoolName.setCat_full_name(categoryRegistration.getData().get(i).getCatFullName());
+                schoolName.setCat_short_name(categoryRegistration.getData().get(i).getCatShortName());
+                schoolCategories.add(schoolName);
             }
             // Creating adapter for spinner
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(SRegistration.this,
@@ -298,6 +303,18 @@ public class SRegistration extends AppCompatActivity implements View.OnClickList
 
             // attaching data adapter to spinner
             spinner.setAdapter(dataAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    categoriesText = categories.get(position);
+                    selectedShortName = schoolCategories.get(position).getCat_short_name();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         }
     }
 }

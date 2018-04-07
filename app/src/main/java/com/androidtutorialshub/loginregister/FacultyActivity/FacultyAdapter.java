@@ -1,9 +1,12 @@
 package com.androidtutorialshub.loginregister.FacultyActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.androidtutorialshub.loginregister.R;
@@ -16,10 +19,13 @@ import java.util.List;
  */
 public class FacultyAdapter extends RecyclerView.Adapter<FacultyAdapter.Model> {
     List<Data> dataList;
+    Context context;
 
 
-    public FacultyAdapter(List<Data> dataList) {
+    public FacultyAdapter(List<Data> dataList, Context context) {
         this.dataList = dataList;
+        this.context = context;
+
     }
 
     @Override
@@ -31,7 +37,9 @@ public class FacultyAdapter extends RecyclerView.Adapter<FacultyAdapter.Model> {
 
     @Override
     public void onBindViewHolder(Model holder, int position) {
-        holder.tv.setText(dataList.get(position).toString());
+        holder.tv1.setText(dataList.get(position).getFaName());
+        holder.tv2.setText(dataList.get(position).getFaPhone());
+        holder.tv3.setText(dataList.get(position).getFaEmail());
     }
 
     @Override
@@ -41,10 +49,22 @@ public class FacultyAdapter extends RecyclerView.Adapter<FacultyAdapter.Model> {
 
     public class Model extends RecyclerView.ViewHolder{
 
-        TextView tv;
+        TextView tv1, tv2, tv3;
+        Button bt;
         public Model(View itemView) {
             super(itemView);
-            tv = itemView.findViewById(R.id.tv);
-        }
-    }
-}
+            tv1 = itemView.findViewById(R.id.tv1);
+            tv2 = itemView.findViewById(R.id.tv2);
+            tv3 = itemView.findViewById(R.id.tv3);
+             bt = itemView.findViewById(R.id.bt);
+             bt.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     Intent intent = new Intent(context, ViewDetailsActivity.class);
+                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                             context.startActivity(intent);
+                             }
+                             });
+                             }
+                             }
+                             }

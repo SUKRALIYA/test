@@ -53,14 +53,14 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
     private TextInputEditText textInputEditTextPastWork;
     private TextView textInputEditTextExperience;
     private TextInputEditText textInputEditTextSchoolId;
-    TextView textInputEditTextCertification,textInputEditTextQualification,textInputEditTextSubject;
-    private RadioButton radioMale, radioFemale,radioUnmarried, radiomarried;
+    TextView textInputEditTextCertification, textInputEditTextQualification, textInputEditTextSubject;
+    private RadioButton radioMale, radioFemale, radioUnmarried, radiomarried;
     private RadioGroup gender, mariatalStatus;
     private AppCompatButton appCompatButtonSubmit;
     private TextInputEditText textInputEditTextDOB;
-    private String genderText="";
-    private String mariatalStatusText="";
-    private String categoriesText="",categoriesText1="",categoriesText2="",categoriesText3="";
+    private String genderText = "";
+    private String mariatalStatusText = "";
+    private String categoriesText = "", categoriesText1 = "", categoriesText2 = "", categoriesText3 = "";
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -73,13 +73,13 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
         Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
-        Spinner spinner3 = (Spinner)findViewById(R.id.spinner3);
+        Spinner spinner3 = (Spinner) findViewById(R.id.spinner3);
         //find all edit text //
         radioMale = (RadioButton) findViewById(R.id.radioMale);
         radioFemale = (RadioButton) findViewById(R.id.radioFemale);
-        radioUnmarried=(RadioButton)findViewById(R.id.radioUnmarried);
-        radiomarried=(RadioButton)findViewById(R.id.radioMarried);
-        textInputEditTextSchoolId=(TextInputEditText)findViewById(R.id.textInputEditTextSchoolId);
+        radioUnmarried = (RadioButton) findViewById(R.id.radioUnmarried);
+        radiomarried = (RadioButton) findViewById(R.id.radioMarried);
+        textInputEditTextSchoolId = (TextInputEditText) findViewById(R.id.textInputEditTextSchoolId);
         textInputEditTextName = (TextInputEditText) findViewById(R.id.textInputEditTextName);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
         textInputEditTextCurrentAddress = (TextInputEditText) findViewById(R.id.textInputEditTextCurrentAddress);
@@ -90,7 +90,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         textInputEditTextDOB = (TextInputEditText) findViewById(R.id.textInputEditTextDOB);
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
         gender = (RadioGroup) findViewById(R.id.gender);
-        mariatalStatus=(RadioGroup)findViewById(R.id.mariatalStatus);
+        mariatalStatus = (RadioGroup) findViewById(R.id.mariatalStatus);
         appCompatButtonSubmit = (AppCompatButton) findViewById(R.id.appCompatButtonSubmit);
 
 
@@ -101,12 +101,12 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.radioFemale:
-                        genderText="female";
+                        genderText = "female";
                         break;
                     case R.id.radioMale:
-                        genderText="male";
+                        genderText = "male";
                         break;
                 }
             }
@@ -114,12 +114,12 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         mariatalStatus.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.radioUnmarried:
-                        mariatalStatusText="unmarried";
+                        mariatalStatusText = "unmarried";
                         break;
                     case R.id.radioMarried:
-                        mariatalStatusText="married";
+                        mariatalStatusText = "married";
                         break;
                 }
             }
@@ -225,7 +225,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoriesText=categories.get(position);
+                categoriesText = categories.get(position);
             }
 
             @Override
@@ -246,7 +246,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoriesText1=categories1.get(position);
+                categoriesText1 = categories1.get(position);
             }
 
             @Override
@@ -270,7 +270,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoriesText2=categories2.get(position);
+                categoriesText2 = categories2.get(position);
             }
 
             @Override
@@ -294,7 +294,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoriesText3=categories3.get(position);
+                categoriesText3 = categories3.get(position);
             }
 
             @Override
@@ -322,31 +322,9 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         final String fa_address_par = textInputEditTextPreviousAddress.getText().toString().trim();
         final String fa_address_curr = textInputEditTextCurrentAddress.getText().toString().trim();
         //first we will do the validations
-        if (TextUtils.isEmpty(sluid)) {
-            textInputEditTextSchoolId.setError("Please enter your School Id");
-            textInputEditTextSchoolId.requestFocus();
-            return;
-        }
         if (TextUtils.isEmpty(fa_name)) {
             textInputEditTextName.setError("Please enter your name");
             textInputEditTextName.requestFocus();
-            return;
-        }
-        //-------password validation-----//
-        if (!isValidPassword(fa_password)) {
-            textInputEditTextPassword.setError("It must be contain alphanumeric and one upper latter and one special character at least ");
-            textInputEditTextPassword.requestFocus();
-            return;
-        }
-            if (TextUtils.isEmpty(fa_password)) {
-                textInputEditTextPassword.setError("Please enter phone number");
-                textInputEditTextPassword.requestFocus();
-                return;
-            }
-
-        if (!radioMale.isChecked() && !radioFemale.isChecked()) {
-            Toast.makeText(getApplicationContext(), "Please select gender",
-                    Toast.LENGTH_SHORT).show();
             return;
         }
         //---------email validation-------//
@@ -360,56 +338,26 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
             textInputEditTextEmail.requestFocus();
             return;
         }
+        //-------password validation-----//
+        if (TextUtils.isEmpty(fa_password)) {
+            textInputEditTextPassword.setError("Please enter Password");
+            textInputEditTextPassword.requestFocus();
+            return;
+        }
+        if (!isValidPassword(fa_password)) {
+            textInputEditTextPassword.setError("It must be contain alphanumeric and one upper latter and one special character at least ");
+            textInputEditTextPassword.requestFocus();
+            return;
+        }
 
         if (TextUtils.isEmpty(fa_phone)) {
             textInputEditTextPhoneNumber.setError("Please enter your phone number");
             textInputEditTextPhoneNumber.requestFocus();
             return;
         }
-        if (!isValidMobile(fa_phone)) {
-            textInputEditTextPhoneNumber.setError("Number must be numeric");
+        if (fa_phone.length()!=10) {
+            textInputEditTextPhoneNumber.setError("Number must be 10 digits");
             textInputEditTextPhoneNumber.requestFocus();
-            return;
-        }
-        if (!radioUnmarried.isChecked()&& !radiomarried.isChecked()) {
-           Toast.makeText(getApplicationContext(),"Please select Mariatal Status",Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(fa_dob)) {
-            textInputEditTextDOB.setError("Please enter your DOB");
-            textInputEditTextDOB.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_join_date)) {
-            textInputEditTextJoinDate.setError("Please enter your Joining Date");
-            textInputEditTextJoinDate.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_experience)|| fa_experience.equals("categoriesText1")) {
-            textInputEditTextExperience.setError("Please enter your experience ");
-            textInputEditTextExperience.requestFocus();
-            return;
-
-        }
-        if (TextUtils.isEmpty(fa_qualification)|| fa_qualification.equals("categoriesText3")) {
-            textInputEditTextQualification.setError("Please enter your qualification");
-            textInputEditTextQualification.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_subject)|| fa_subject.equals("categoriesText2")) {
-            textInputEditTextSubject.setError("Please enter your Subject");
-            textInputEditTextSubject.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_certification)|| fa_certification.equals("categoriesText")) {
-            textInputEditTextCertification.setError("Please enter your Certification");
-            textInputEditTextCertification.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_previous)) {
-            textInputEditTextExperience.setError("Please enter your Previous Qrganization ");
-            textInputEditTextExperience.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(fa_address_par)) {
@@ -421,8 +369,56 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
             textInputEditTextCurrentAddress.setError("Please enter your Current Address");
             textInputEditTextCurrentAddress.requestFocus();
             return;
+        }
+        if (TextUtils.isEmpty(fa_join_date)) {
+            textInputEditTextJoinDate.setError("Please enter your Joining Date");
+            textInputEditTextJoinDate.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(fa_previous)) {
+            textInputEditTextExperience.setError("Please enter your Previous Qrganization ");
+            textInputEditTextExperience.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(fa_qualification) || fa_qualification.equals("categoriesText3")) {
+            textInputEditTextQualification.setError("Please enter your qualification");
+            textInputEditTextQualification.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(fa_experience) || fa_experience.equals("categoriesText1")) {
+            textInputEditTextExperience.setError("Please enter your experience ");
+            textInputEditTextExperience.requestFocus();
+            return;
 
         }
+        if (TextUtils.isEmpty(fa_certification) || fa_certification.equals("categoriesText")) {
+            textInputEditTextCertification.setError("Please enter your Certification");
+            textInputEditTextCertification.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(fa_subject) || fa_subject.equals("categoriesText2")) {
+            textInputEditTextSubject.setError("Please enter your Subject");
+            textInputEditTextSubject.requestFocus();
+            return;
+        }
+
+        if (!radioMale.isChecked() && !radioFemale.isChecked()) {
+            Toast.makeText(getApplicationContext(), "Please select gender",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(fa_dob)) {
+            textInputEditTextDOB.setError("Please enter your DOB");
+            textInputEditTextDOB.requestFocus();
+            return;
+        }
+
+        if (!radioUnmarried.isChecked() && !radiomarried.isChecked()) {
+            Toast.makeText(getApplicationContext(), "Please select Mariatal Status", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         class Faculty extends AsyncTask<Void, Void, String> {
 
             @Override
@@ -431,7 +427,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                 RequestHandler requestHandler = new RequestHandler();
                 //creating request parameters
                 HashMap<String, String> params = new HashMap<>();
-                params.put("sluid",sluid);
+                params.put("sluid", sluid);
                 params.put("fa_name", fa_name);
                 params.put("fa_password", fa_password);
                 params.put("fa_gender", fa_gender);
@@ -449,6 +445,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                 params.put("fa_address_curr", fa_address_curr);
                 return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=AddEmployee", params);
             }
+
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 emptyInputEditText();
@@ -459,7 +456,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
 
                     //if no error in response
                     if (obj.getString("status").equals("1")) {
-                         Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                         //getting the user from the response
                         String sluid = obj.getString("sluid");
                         String fa_name = obj.getString("fa_name");
@@ -477,6 +474,14 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                         String fa_previous = obj.getString("fa_previous");
                         String fa_address_par = obj.getString("fa_address_par");
                         String fa_address_cur = obj.getString("fa_address_cur");
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("SchoolData", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("fa_name",fa_name);
+                        editor.putString("sluid", sluid);
+                        editor.apply();
+                        finish();
+
                     } else {
                         Toast.makeText(getApplicationContext(), "Invalid School Id and Password", Toast.LENGTH_LONG).show();
                     }
@@ -503,6 +508,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         textInputEditTextPreviousAddress.setText(null);
         textInputEditTextCurrentAddress.setText(null);
         textInputEditTextSchoolId.setText(null);
+
     }
 
     @Override
@@ -515,6 +521,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
+
     public static boolean isValidPassword(final String password) {
 
         Pattern pattern;
@@ -526,6 +533,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         return matcher.matches();
 
     }
+
     private boolean isValidEmailId(String email) {
 
         return Pattern.compile("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
@@ -535,21 +543,22 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                 + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                 + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$").matcher(email).matches();
     }
-    private boolean isValidMobile(String phone) {
+
+    private boolean isValidMobile(String fa_phone) {
         boolean check = false;
-        if (!Pattern.matches("[a-zA-Z]+", phone)) {
-            if (phone.length() < 6 || phone.length() > 13) {
-                // if(phone.length() != 10) {
-                check = false;
-                textInputEditTextPhoneNumber.setError("Not Valid Number");
+        if (!Pattern.matches("[a-zA-Z]+", fa_phone)) {
+            if (fa_phone.length() < 6 || fa_phone.length() > 13) {
+                if (fa_phone.length() != 10) {
+                    check = false;
+                    textInputEditTextPhoneNumber.setError("Not Valid Number");
+                } else {
+                    check = true;
+                }
             } else {
-                check = true;
+                check = false;
             }
-        } else {
-            check = false;
+            return check;
         }
         return check;
     }
-
 }
-

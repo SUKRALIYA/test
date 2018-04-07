@@ -32,7 +32,8 @@
         <activity android:name=".SchoolRegistration.ForgetIdActivity" />
         <activity android:name=".AddStudent.StudentAddActivity" />
         <activity android:name=".SchoolRegistration.NotificationActivity" />
-        <activity android:name=".FacultyActivity.ViewFacultyActivity"></activity>
+        <activity android:name=".FacultyActivity.ViewFacultyActivity" />
+        <activity android:name=".FacultyActivity.ViewDetailsActivity" />
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.androidtutorialshub.loginregister.FacultyActivity.AddTeacher;
+import com.androidtutorialshub.loginregister.FacultyActivity.ViewDetailsActivity;
 import com.androidtutorialshub.loginregister.FacultyActivity.ViewFacultyActivity;
 import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.SchoolRegistration.ForgetPasswordActivity;
@@ -30,7 +31,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 // This method will be executed once the timer is over
-                Intent i = new Intent(getApplicationContext(), SRegistration.class);
+                Intent i = new Intent(getApplicationContext(), ViewDetailsActivity.class);
                 startActivity(i);
                 finish();
             }
