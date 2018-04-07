@@ -31,7 +31,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 // This method will be executed once the timer is over
-                Intent i = new Intent(getApplicationContext(), ViewDetailsActivity.class);
+                Intent i = new Intent(getApplicationContext(), ViewFacultyActivity.class);
                 startActivity(i);
                 finish();
             }

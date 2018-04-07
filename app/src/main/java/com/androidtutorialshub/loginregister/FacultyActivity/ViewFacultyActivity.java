@@ -35,7 +35,16 @@ public class ViewFacultyActivity extends AppCompatActivity {
         dataList = new ArrayList<>();
         facultyAdapter = new FacultyAdapter(dataList, getApplicationContext());
         recyclerView.setAdapter(facultyAdapter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dataList.clear();
+        facultyAdapter.notifyDataSetChanged();
         new RegisterUser().execute();
+
     }
 
     class RegisterUser extends AsyncTask<Void, Void, String> {

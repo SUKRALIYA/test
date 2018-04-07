@@ -47,24 +47,26 @@ public class FacultyAdapter extends RecyclerView.Adapter<FacultyAdapter.Model> {
         return dataList.size();
     }
 
-    public class Model extends RecyclerView.ViewHolder{
+    public class Model extends RecyclerView.ViewHolder {
 
         TextView tv1, tv2, tv3;
         Button bt;
+
         public Model(View itemView) {
             super(itemView);
             tv1 = itemView.findViewById(R.id.tv1);
             tv2 = itemView.findViewById(R.id.tv2);
             tv3 = itemView.findViewById(R.id.tv3);
-             bt = itemView.findViewById(R.id.bt);
-             bt.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     Intent intent = new Intent(context, ViewDetailsActivity.class);
-                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                             context.startActivity(intent);
-                             }
-                             });
-                             }
-                             }
-                             }
+            bt = itemView.findViewById(R.id.bt);
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ViewDetailsActivity.class);
+                    intent.putExtra(ViewDetailsActivity.DATA, dataList.get(getAdapterPosition()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            });
+        }
+    }
+}

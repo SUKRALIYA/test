@@ -20,7 +20,7 @@
             android:layout_marginStart="5dp"
             android:textColor="#ffffff"
             android:id="@+id/textViewName"
-            android:textSize="20dp"
+            android:textSize="20sp"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -29,8 +29,31 @@
             android:layout_marginStart="5dp"
             android:textColor="#ffffff"
             android:id="@+id/textViewId"
-            android:textSize="20dp"
+            android:textSize="20sp"
             />
     </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Name"/>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"/>
+    <View
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <Button
+        android:id="@+id/delete"
+        android:text="delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

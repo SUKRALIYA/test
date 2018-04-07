@@ -2,10 +2,13 @@
 package com.androidtutorialshub.loginregister.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 
-public class Data {
+public class Data implements Parcelable {
 
     @SerializedName("fa_email")
     private String mFaEmail;
@@ -124,4 +127,51 @@ public class Data {
                 ", mSchId='" + mSchId + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mFaEmail);
+        dest.writeString(this.mFaEventdate);
+        dest.writeString(this.mFaMapClass);
+        dest.writeString(this.mFaMapSection);
+        dest.writeString(this.mFaName);
+        dest.writeString(this.mFaPhone);
+        dest.writeString(this.mFaStatus);
+        dest.writeString(this.mFaUid);
+        dest.writeString(this.mLastUpdateDate);
+        dest.writeString(this.mSchId);
+    }
+
+    public Data() {
+    }
+
+    protected Data(Parcel in) {
+        this.mFaEmail = in.readString();
+        this.mFaEventdate = in.readString();
+        this.mFaMapClass = in.readString();
+        this.mFaMapSection = in.readString();
+        this.mFaName = in.readString();
+        this.mFaPhone = in.readString();
+        this.mFaStatus = in.readString();
+        this.mFaUid = in.readString();
+        this.mLastUpdateDate = in.readString();
+        this.mSchId = in.readString();
+    }
+
+    public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data>() {
+        @Override
+        public Data createFromParcel(Parcel source) {
+            return new Data(source);
+        }
+
+        @Override
+        public Data[] newArray(int size) {
+            return new Data[size];
+        }
+    };
 }
