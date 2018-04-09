@@ -1,7 +1,7 @@
 package com.androidtutorialshub.loginregister.FacultyActivity;
 
 
-        import android.os.AsyncTask;
+import android.os.AsyncTask;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.support.v7.widget.DefaultItemAnimator;
@@ -31,7 +31,6 @@ public class ViewFacultyActivity extends AppCompatActivity {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         dataList = new ArrayList<>();
         facultyAdapter = new FacultyAdapter(dataList, getApplicationContext());
         recyclerView.setAdapter(facultyAdapter);

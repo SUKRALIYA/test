@@ -1,59 +1,41 @@
 package com.androidtutorialshub.loginregister.SchoolRegistration;
 
-import android.Manifest;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.androidtutorialshub.loginregister.R;
-import com.androidtutorialshub.loginregister.activities.MainActivity;
 import com.androidtutorialshub.loginregister.activities.RequestHandler;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.androidtutorialshub.loginregister.model.SchoolName;
+import com.androidtutorialshub.loginregister.model.categoryregist.CategoryLogin;
+import com.androidtutorialshub.loginregister.model.categoryregist.CategoryRegistration;
+import com.androidtutorialshub.loginregister.model.categoryregist.LoginTypeNmae;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class SLoginActivity extends AppCompatActivity implements View.OnClickListener {
     private TextInputEditText textInputEditTextSchoolId;
@@ -63,15 +45,20 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
     private TextView textViewLinkForgetPassword;
     private AppCompatButton appCompatButtonLogin;
     private AppCompatTextView appCompatTextViewLoginLink;
+    private Spinner spinner;
     ProgressBar progressBar;
+    private  String categoriesText;
+    private SchoolName selectedLoginType;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_slogin);
+        spinner=(Spinner)findViewById(R.id.spinner);
         initViews();
         initListeners();
+        new LoginType().execute();
     }
     /**
      * This method is to initialize views
@@ -188,7 +175,6 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
 
                 params.put("sluid", sluid);
                 params.put("slpassword", slpassword);
-
                 //returing the response
                 return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=Login", params);
             }
@@ -197,16 +183,14 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 emptyInputEditText();
-
                 progressBar.setVisibility(View.GONE);
-
                 try {
                     //converting response to json object
                     JSONObject obj = new JSONObject(s);
 
                     //if no error in response
                     if (obj.getString("status").equals("1")) {
-                        // Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                         Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
 
                         //getting the user from the response
 
@@ -224,13 +208,13 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
 //                        String time = obj.getString("message");
 //                        String id   = obj.getString("sluid");
 
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                     //   Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         // ye value put ki
+                        ////                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
 //                        intent.putExtra("Time", time);
 //                        intent.putExtra("id", id);
-                        startActivity(intent);
+                      //  startActivity(intent);
 
-//                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                     } else {
                         Toast.makeText(getApplicationContext(), "Invalid School Id and Password", Toast.LENGTH_LONG).show();
@@ -249,10 +233,57 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
 
         textInputEditTextSchoolId.setText(null);
         textInputEditTextSchoolPassword.setText(null);
-
     }
 
     public static boolean validate(String password) {
         return password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+    }
+    class LoginType extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            //creating request handler object
+            RequestHandler requestHandler = new RequestHandler();
+            return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=logiNN_type");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Gson gson = new Gson();
+            CategoryLogin categoryLogin = gson.fromJson(s,CategoryLogin.class);
+            final List<String> categories = new ArrayList<String>();
+            categories.add("Please Select");
+            LoginTypeNmae loginTypeNmae=new LoginTypeNmae();
+            loginTypeNmae.setLogin_type_name("Please Select");
+            for (int i = 0; i < categoryLogin.getData().size(); i++) {
+                categories.add(categoryLogin.getData().get(i).getmLoginTypeName());
+            }
+            // Creating adapter for spinner
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(SLoginActivity.this,
+                    android.R.layout.simple_spinner_item, categories);
+
+            // Drop down layout style - list view with radio button
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // attaching data adapter to spinner
+            spinner.setAdapter(dataAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    categoriesText = categories.get(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
     }
 }

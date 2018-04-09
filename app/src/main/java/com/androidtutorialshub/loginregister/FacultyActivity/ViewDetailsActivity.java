@@ -24,11 +24,27 @@ public class ViewDetailsActivity extends AppCompatActivity {
         }else {
             finish();
         }
-
-
         TextView textView=(TextView)findViewById(R.id.textViewName);
         TextView textView1=(TextView)findViewById(R.id.textViewId);
         TextView textViewName=(TextView)findViewById(R.id.tvName);
+        TextView fa_uid=(TextView)findViewById(R.id.tvUid);
+        TextView sch_id=(TextView)findViewById(R.id.tvId);
+        TextView fa_email=(TextView)findViewById(R.id.tvEmail);
+        TextView fa_phone=(TextView)findViewById(R.id.tvPhone);
+        TextView fa_status=(TextView)findViewById(R.id.tvStatus);
+        TextView last_update_date=(TextView)findViewById(R.id.tvLastUpdateDate);
+        TextView fa_eventdate=(TextView)findViewById(R.id.tvEventDate);
+        TextView fa_map_class=(TextView)findViewById(R.id.tvClass);
+        TextView fa_map_section=(TextView)findViewById(R.id.tvSection);
+        fa_uid.setText(data.getFaUid());
+        sch_id.setText(data.getSchId());
+        fa_email.setText(data.getFaEmail());
+        fa_phone.setText(data.getFaPhone());
+        fa_status.setText(data.getFaStatus());
+        last_update_date.setText(data.getLastUpdateDate());
+        fa_eventdate.setText(data.getFaEventdate());
+        fa_map_class.setText(data.getFaMapClass());
+        fa_map_section.setText(data.getFaMapSection());
         textView.setText(data.getFaName());
         textView1.setText(data.getSchId());
         textViewName.setText(data.getFaName());
