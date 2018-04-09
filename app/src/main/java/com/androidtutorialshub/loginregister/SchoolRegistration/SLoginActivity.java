@@ -135,6 +135,7 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
 
         final String sluid = textInputEditTextSchoolId.getText().toString().trim();
         final String slpassword = textInputEditTextSchoolPassword.getText().toString().trim();
+        final String sLoginType = categoriesText;
 
         //first we will do the validations
 
@@ -142,6 +143,12 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
         if (TextUtils.isEmpty(sluid)) {
             textInputEditTextSchoolId.setError("Please enter your School id");
             textInputEditTextSchoolId.requestFocus();
+            return;
+        }
+
+        if(TextUtils.isEmpty(sLoginType)|| TextUtils.equals(sLoginType,"Please Select")){
+
+            Toast.makeText(this, "Please select type", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -175,6 +182,7 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
 
                 params.put("sluid", sluid);
                 params.put("slpassword", slpassword);
+                params.put("login_type", sLoginType);
                 //returing the response
                 return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=Login", params);
             }
