@@ -2,22 +2,18 @@ package com.androidtutorialshub.loginregister.FacultyActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatRadioButton;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -26,22 +22,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidtutorialshub.loginregister.R;
-import com.androidtutorialshub.loginregister.activities.MainActivity;
 import com.androidtutorialshub.loginregister.activities.RequestHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AddEmployee extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private TextInputEditText textInputEditTextName;
     private TextInputEditText textInputEditTextEmail;
@@ -68,7 +61,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_add_teacher);
+        setContentView(R.layout.activity_add_employee);
         // Spinner element
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
@@ -143,7 +136,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                 int mMonth = mcurrentDate.get(Calendar.MONTH);
                 int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker = new DatePickerDialog(AddTeacher.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog mDatePicker = new DatePickerDialog(AddEmployee.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
                         /*      Your code   to get date and time    */
@@ -155,6 +148,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                 mDatePicker.show();
             }
         });
+
 //----------------start calender code-------------------------------------------------------------------
         textInputEditTextDOB.setOnClickListener(new View.OnClickListener() {
 
@@ -167,7 +161,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                 int mMonth = mcurrentDate.get(Calendar.MONTH);
                 int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker = new DatePickerDialog(AddTeacher.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog mDatePicker = new DatePickerDialog(AddEmployee.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
                         /*      Your code   to get date and time    */
@@ -190,7 +184,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                 int mMonth = mcurrentDate.get(Calendar.MONTH);
                 int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker = new DatePickerDialog(AddTeacher.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog mDatePicker = new DatePickerDialog(AddEmployee.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
                         /*      Your code   to get date and time    */
@@ -475,6 +469,7 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
                         String fa_address_par = obj.getString("fa_address_par");
                         String fa_address_cur = obj.getString("fa_address_cur");
 
+
                         SharedPreferences sharedPreferences = getSharedPreferences("SchoolData", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("fa_name",fa_name);
@@ -507,7 +502,6 @@ public class AddTeacher extends AppCompatActivity implements AdapterView.OnItemS
         textInputEditTextPastWork.setText(null);
         textInputEditTextPreviousAddress.setText(null);
         textInputEditTextCurrentAddress.setText(null);
-        textInputEditTextSchoolId.setText(null);
 
     }
 

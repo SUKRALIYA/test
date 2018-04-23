@@ -3,21 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context=".FacultyActivity.ViewFacultyActivity">
+    tools:context=".FacultyActivity.ViewEmployeeActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/side_nav_bar"
+        >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:layout_marginStart="15sp"
+        android:id="@+id/backPage"
+        android:drawableRight="@drawable/ic_arrow_back_black_24dp"
+        />
    <TextView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:textSize="30dp"
-       android:background="@color/blue"
+      android:layout_marginStart="50sp"
        android:text="Employees"
        />
+    </RelativeLayout>
 <android.support.v7.widget.SearchView
     android:id="@+id/searchView"
     android:layout_marginTop="40dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/blue"
+    android:background="@drawable/side_nav_bar"
     >
 </android.support.v7.widget.SearchView>
 

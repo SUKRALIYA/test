@@ -8,7 +8,6 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.DatePicker;
 
-import com.androidtutorialshub.loginregister.FacultyActivity.AddTeacher;
 import com.androidtutorialshub.loginregister.R;
 
 import java.util.Calendar;

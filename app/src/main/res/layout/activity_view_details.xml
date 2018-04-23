@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:orientation="vertical"
     tools:context=".FacultyActivity.ViewDetailsActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff3333"
+        android:background="@drawable/side_nav_bar"
         android:orientation="vertical"
         >
         <TextView
@@ -21,6 +20,7 @@
             android:textColor="#ffffff"
             android:id="@+id/textViewName"
             android:textSize="20sp"
+            android:textStyle="bold"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -29,8 +29,17 @@
             android:layout_marginStart="5dp"
             android:textColor="#ffffff"
             android:id="@+id/textViewId"
+            android:textStyle="bold"
             android:textSize="20sp"
             />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView
@@ -39,6 +48,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Name"/>
 
     <TextView
@@ -57,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
            android:layout_marginStart="5dp"
+           android:textStyle="bold"
         android:layout_marginTop="5dp"
            android:textSize="15sp"
         android:text="Phone Number"/>
@@ -78,6 +89,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Email Address"/>
     <TextView
         android:id="@+id/tvEmail"
@@ -97,6 +109,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Faculty UID"/>
     <TextView
         android:id="@+id/tvUid"
@@ -116,6 +129,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="School Id"/>
     <TextView
         android:id="@+id/tvId"
@@ -135,6 +149,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Status"/>
     <TextView
         android:id="@+id/tvStatus"
@@ -154,6 +169,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Last Update Date"/>
     <TextView
         android:id="@+id/tvLastUpdateDate"
@@ -173,6 +189,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Class"/>
     <TextView
         android:id="@+id/tvClass"
@@ -192,6 +209,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Section"/>
 
     <TextView
@@ -213,6 +231,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:textSize="15sp"
+        android:textStyle="bold"
         android:text="Event Date"/>
     <TextView
         android:id="@+id/tvEventDate"
@@ -234,12 +253,22 @@
         android:id="@+id/delete"
         android:text="delete"
         android:textColor="#ffffff"
+           android:background="@drawable/button_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/EditView"
         android:text="Edit"
         android:textColor="#ffffff"
+        android:background="@drawable/button_background"
+        android:layout_marginStart="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/backView"
+        android:text="Back"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_background"
         android:layout_marginStart="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

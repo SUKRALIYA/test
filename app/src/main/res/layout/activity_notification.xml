@@ -4,12 +4,12 @@
     android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg1"
+    android:background="@drawable/side_nav_bar"
     android:paddingBottom="20dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="20dp"
-    tools:context=".FacultyActivity.AddTeacher">
+    tools:context=".FacultyActivity.AddEmployee">
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,13 +18,13 @@
             android:layout_width="99dp"
             android:layout_height="99dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:src="@drawable/logo" />
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/appCompatTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             android:gravity="center"
             android:text="Notification "
             android:textStyle="bold"

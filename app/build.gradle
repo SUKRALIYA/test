@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.androidtutorialshub.loginregister"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -31,4 +31,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.google.android.gms:play-services-location:11.2.0'
     implementation 'com.google.firebase:firebase-appindexing:11.2.0'
+
 }

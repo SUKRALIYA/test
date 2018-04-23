@@ -1,6 +1,8 @@
 package com.androidtutorialshub.loginregister.FacultyActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputEditText;
@@ -9,11 +11,11 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.activities.RequestHandler;
 import com.androidtutorialshub.loginregister.model.Data;
+import com.androidtutorialshub.loginregister.model.EmployeeData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,14 +37,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EditDetailsActivity extends AppCompatActivity implements  AdapterView.OnItemSelectedListener {
-
-    private TextInputEditText textInputEditTextName;
+public class EditDetailsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    public static final String EMPLOYEEDATA = "Employee Data";
+    private TextInputEditText textInputEditTextEmployeeUid;
     private TextInputEditText textInputEditTextEmail;
+    private TextInputEditText textInputEditTextName;
     private TextInputEditText textInputEditTextCurrentAddress;
     private TextInputEditText textInputEditTextPreviousAddress;
     private TextInputEditText textInputEditTextPhoneNumber;
-    private TextInputEditText textInputEditTextPassword;
+    private TextInputEditText textInputEditTextStatus;
     private TextInputEditText textInputEditTextJoinDate;
     private TextInputEditText textInputEditTextPastWork;
     private TextView textInputEditTextExperience;
@@ -54,10 +58,15 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
     private String genderText = "";
     private String mariatalStatusText = "";
     private String categoriesText = "", categoriesText1 = "", categoriesText2 = "", categoriesText3 = "";
+    public static final String DATA = "Data";
+    private EmployeeData employeeData;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_edit_details);
         // Spinner element
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -69,8 +78,9 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
         radioFemale = (RadioButton) findViewById(R.id.radioFemale);
         radioUnmarried = (RadioButton) findViewById(R.id.radioUnmarried);
         radiomarried = (RadioButton) findViewById(R.id.radioMarried);
+        textInputEditTextName = (TextInputEditText)findViewById(R.id.textInputEditTextName);
         textInputEditTextSchoolId = (TextInputEditText) findViewById(R.id.textInputEditTextSchoolId);
-        textInputEditTextName = (TextInputEditText) findViewById(R.id.textInputEditTextName);
+        textInputEditTextEmployeeUid = (TextInputEditText) findViewById(R.id.textInputEditTextEmployeeUid);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
         textInputEditTextCurrentAddress = (TextInputEditText) findViewById(R.id.textInputEditTextCurrentAddress);
         textInputEditTextPreviousAddress = (TextInputEditText) findViewById(R.id.textInputEditTextPreviousAddress);
@@ -78,15 +88,33 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
         textInputEditTextJoinDate = (TextInputEditText) findViewById(R.id.textInputEditTextJoinDate);
         textInputEditTextPastWork = (TextInputEditText) findViewById(R.id.textInputEditTextPastWork);
         textInputEditTextDOB = (TextInputEditText) findViewById(R.id.textInputEditTextDOB);
-        textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
+        textInputEditTextStatus = (TextInputEditText) findViewById(R.id.textInputEditTextStatus);
         gender = (RadioGroup) findViewById(R.id.gender);
         mariatalStatus = (RadioGroup) findViewById(R.id.mariatalStatus);
         appCompatButtonSubmit = (AppCompatButton) findViewById(R.id.appCompatButtonSubmit);
+        //------------geting vuale from intent------------------------------//
+        if (getIntent() != null) {
+            employeeData = getIntent().getParcelableExtra(EMPLOYEEDATA);
+        } else {
+            finish();
+        }
+        textInputEditTextEmployeeUid.setText(employeeData.getmFaUid());
+        textInputEditTextSchoolId.setText(employeeData.getmSchId());
+        textInputEditTextEmail.setText(employeeData.getmFaEmail());
+        textInputEditTextPhoneNumber.setText(employeeData.getmFaPhone());
+        textInputEditTextStatus.setText(employeeData.getmFaStatus());
+        textInputEditTextName.setText(employeeData.getmFaName());
+        textInputEditTextCurrentAddress.setText(employeeData.getmFaAddressCurr());
+        textInputEditTextPreviousAddress.setText(employeeData.getmFaAddressPar());
+        textInputEditTextPastWork.setText(employeeData.getmFaPrevious());
+        textInputEditTextJoinDate.setText(employeeData.getmFaJoinDate());
+        textInputEditTextDOB.setText(employeeData.getmFaDob());
+        textInputEditTextCertification.setText(employeeData.getmFaCertification());
+        textInputEditTextQualification.setText(employeeData.getmFaExperience());
+        textInputEditTextExperience.setText(employeeData.getmFaExperience());
+        textInputEditTextSubject.setText(employeeData.getmFaSubject());
 
-
-        SharedPreferences sharedPreferences = getSharedPreferences("SchoolData", MODE_PRIVATE);
-        String sluid = sharedPreferences.getString("sluid", null);
-        textInputEditTextSchoolId.setText(sluid);
+//-------------------------------end-------------------------------//
 
         gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -145,6 +173,7 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
                 mDatePicker.show();
             }
         });
+
 //----------------start calender code-------------------------------------------------------------------
         textInputEditTextDOB.setOnClickListener(new View.OnClickListener() {
 
@@ -293,10 +322,12 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
             }
         });
     }
+
     public void facultySubmittion() {
         final String sluid = textInputEditTextSchoolId.getText().toString().trim();
+        final String emp_uid = textInputEditTextEmployeeUid.getText().toString().trim();
         final String fa_name = textInputEditTextName.getText().toString().trim();
-        final String fa_password = textInputEditTextPassword.getText().toString().trim();
+        final String fa_status = textInputEditTextStatus.getText().toString().trim();
         final String fa_gender = genderText.toString().trim();
         final String fa_email = textInputEditTextEmail.getText().toString().trim();
         final String fa_phone = textInputEditTextPhoneNumber.getText().toString().trim();
@@ -311,101 +342,101 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
         final String fa_address_par = textInputEditTextPreviousAddress.getText().toString().trim();
         final String fa_address_curr = textInputEditTextCurrentAddress.getText().toString().trim();
         //first we will do the validations
-        if (TextUtils.isEmpty(fa_name)) {
-            textInputEditTextName.setError("Please enter your name");
-            textInputEditTextName.requestFocus();
-            return;
-        }
-        //---------email validation-------//
-        if (TextUtils.isEmpty(fa_email)) {
-            textInputEditTextEmail.setError("Please enter your email");
-            textInputEditTextEmail.requestFocus();
-            return;
-        }
-        if (!isValidEmailId(fa_email)) {
-            textInputEditTextEmail.setError("Please enter valid email");
-            textInputEditTextEmail.requestFocus();
-            return;
-        }
-        //-------password validation-----//
-        if (TextUtils.isEmpty(fa_password)) {
-            textInputEditTextPassword.setError("Please enter Password");
-            textInputEditTextPassword.requestFocus();
-            return;
-        }
-        if (!isValidPassword(fa_password)) {
-            textInputEditTextPassword.setError("It must be contain alphanumeric and one upper latter and one special character at least ");
-            textInputEditTextPassword.requestFocus();
-            return;
-        }
-
-        if (TextUtils.isEmpty(fa_phone)) {
-            textInputEditTextPhoneNumber.setError("Please enter your phone number");
-            textInputEditTextPhoneNumber.requestFocus();
-            return;
-        }
-        if (fa_phone.length()!=10) {
-            textInputEditTextPhoneNumber.setError("Number must be 10 digits");
-            textInputEditTextPhoneNumber.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_address_par)) {
-            textInputEditTextPreviousAddress.setError("Please enter your Previous Address");
-            textInputEditTextPreviousAddress.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_address_curr)) {
-            textInputEditTextCurrentAddress.setError("Please enter your Current Address");
-            textInputEditTextCurrentAddress.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_join_date)) {
-            textInputEditTextJoinDate.setError("Please enter your Joining Date");
-            textInputEditTextJoinDate.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_previous)) {
-            textInputEditTextExperience.setError("Please enter your Previous Qrganization ");
-            textInputEditTextExperience.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_qualification) || fa_qualification.equals("categoriesText3")) {
-            textInputEditTextQualification.setError("Please enter your qualification");
-            textInputEditTextQualification.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_experience) || fa_experience.equals("categoriesText1")) {
-            textInputEditTextExperience.setError("Please enter your experience ");
-            textInputEditTextExperience.requestFocus();
-            return;
-
-        }
-        if (TextUtils.isEmpty(fa_certification) || fa_certification.equals("categoriesText")) {
-            textInputEditTextCertification.setError("Please enter your Certification");
-            textInputEditTextCertification.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_subject) || fa_subject.equals("categoriesText2")) {
-            textInputEditTextSubject.setError("Please enter your Subject");
-            textInputEditTextSubject.requestFocus();
-            return;
-        }
-
-        if (!radioMale.isChecked() && !radioFemale.isChecked()) {
-            Toast.makeText(getApplicationContext(), "Please select gender",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(fa_dob)) {
-            textInputEditTextDOB.setError("Please enter your DOB");
-            textInputEditTextDOB.requestFocus();
-            return;
-        }
-
-        if (!radioUnmarried.isChecked() && !radiomarried.isChecked()) {
-            Toast.makeText(getApplicationContext(), "Please select Mariatal Status", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (TextUtils.isEmpty(fa_name)) {
+//            textInputEditTextName.setError("Please enter your name");
+//            textInputEditTextName.requestFocus();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(emp_uid)) {
+//            textInputEditTextEmployeeUid.setError("Please enter your Employee Name");
+//            textInputEditTextEmployeeUid.requestFocus();
+//            return;
+//        }
+//        //---------email validation-------//
+//        if (TextUtils.isEmpty(fa_email)) {
+//            textInputEditTextEmail.setError("Please enter your email");
+//            textInputEditTextEmail.requestFocus();
+//            return;
+//        }
+//        if (!isValidEmailId(fa_email)) {
+//            textInputEditTextEmail.setError("Please enter valid email");
+//            textInputEditTextEmail.requestFocus();
+//            return;
+//        }
+//        //-------password validation-----//
+//        if (TextUtils.isEmpty(fa_status)) {
+//            textInputEditTextStatus.setError("Please enter Status");
+//            textInputEditTextStatus.requestFocus();
+//            return;
+//        }
+//
+//        if (TextUtils.isEmpty(fa_phone)) {
+//            textInputEditTextPhoneNumber.setError("Please enter your phone number");
+//            textInputEditTextPhoneNumber.requestFocus();
+//            return;
+//        }
+//        if (fa_phone.length()!=10) {
+//            textInputEditTextPhoneNumber.setError("Number must be 10 digits");
+//            textInputEditTextPhoneNumber.requestFocus();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(fa_address_par)) {
+//            textInputEditTextPreviousAddress.setError("Please enter your Previous Address");
+//            textInputEditTextPreviousAddress.requestFocus();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(fa_address_curr)) {
+//            textInputEditTextCurrentAddress.setError("Please enter your Current Address");
+//            textInputEditTextCurrentAddress.requestFocus();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(fa_join_date)) {
+//            textInputEditTextJoinDate.setError("Please enter your Joining Date");
+//            textInputEditTextJoinDate.requestFocus();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(fa_previous)) {
+//            textInputEditTextExperience.setError("Please enter your Previous Qrganization ");
+//            textInputEditTextExperience.requestFocus();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(fa_qualification) || fa_qualification.equals("categoriesText3")) {
+//            textInputEditTextQualification.setError("Please enter your qualification");
+//            textInputEditTextQualification.requestFocus();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(fa_experience) || fa_experience.equals("categoriesText1")) {
+//            textInputEditTextExperience.setError("Please enter your experience ");
+//            textInputEditTextExperience.requestFocus();
+//            return;
+//
+//        }
+//        if (TextUtils.isEmpty(fa_certification) || fa_certification.equals("categoriesText")) {
+//            textInputEditTextCertification.setError("Please enter your Certification");
+//            textInputEditTextCertification.requestFocus();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(fa_subject) || fa_subject.equals("categoriesText2")) {
+//            textInputEditTextSubject.setError("Please enter your Subject");
+//            textInputEditTextSubject.requestFocus();
+//            return;
+//        }
+//
+//        if (!radioMale.isChecked() && !radioFemale.isChecked()) {
+//            Toast.makeText(getApplicationContext(), "Please select gender",
+//                    Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (TextUtils.isEmpty(fa_dob)) {
+//            textInputEditTextDOB.setError("Please enter your DOB");
+//            textInputEditTextDOB.requestFocus();
+//            return;
+//        }
+//
+//        if (!radioUnmarried.isChecked() && !radiomarried.isChecked()) {
+//            Toast.makeText(getApplicationContext(), "Please select Mariatal Status", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
 
         class Faculty extends AsyncTask<Void, Void, String> {
@@ -417,8 +448,9 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
                 //creating request parameters
                 HashMap<String, String> params = new HashMap<>();
                 params.put("sluid", sluid);
+                params.put("emp_uid",emp_uid);
                 params.put("fa_name", fa_name);
-                params.put("fa_password", fa_password);
+                params.put("fa_status", fa_status);
                 params.put("fa_gender", fa_gender);
                 params.put("fa_email", fa_email);
                 params.put("fa_phone", fa_phone);
@@ -432,9 +464,8 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
                 params.put("fa_previous", fa_previous);
                 params.put("fa_address_par", fa_address_par);
                 params.put("fa_address_curr", fa_address_curr);
-                return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?sluid=\" +eschlid+\"&emp_uid=\"+emp_uid+\"&fa_name=\"+enameid+\"&fa_gender=\"+egenderid+\"&fa_email=\"+eemailid+\"&fa_phone=\"+ephoneid+\"&fa_mariatal_status=\"+emarstatusid+\"&fa_dob=\"+edobid+\"&fa_join_date=\"+ejoinid+\"&fa_experience=\"+eexperid+\"&fa_qualification=\"+equaliid+\"&fa_subject=\"+esubjid+\"&fa_status=\"+estatusid+\"&fa_address_par=\"+eparaddid+\"&fa_address_curr=\"+ecurraddid+\"&fa_previous=\"+eprevid+\"&ACTION=UpdateEmployee\"+\"&action_owner=SCHOOL\"", params);
+                return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=UpdateEmployee", params);
             }
-
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 emptyInputEditText();
@@ -448,8 +479,9 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
                         Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
                         //getting the user from the response
                         String sluid = obj.getString("sluid");
+                        String emp_uid = obj.getString("emp_uid");
                         String fa_name = obj.getString("fa_name");
-                        String fa_password = obj.getString("fa_password");
+                        String fa_status = obj.getString("fa_status");
                         String fa_gender = obj.getString("fa_gender");
                         String fa_email = obj.getString("fa_email");
                         String fa_phone = obj.getString("fa_phone");
@@ -463,14 +495,28 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
                         String fa_previous = obj.getString("fa_previous");
                         String fa_address_par = obj.getString("fa_address_par");
                         String fa_address_cur = obj.getString("fa_address_cur");
-
-                        SharedPreferences sharedPreferences = getSharedPreferences("SchoolData", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("fa_name",fa_name);
-                        editor.putString("sluid", sluid);
-                        editor.apply();
+                         // puting data in intent////
+                        Intent intent = new Intent(getApplicationContext(),EditDetailsActivity.class);
+                        intent.putExtra("sluid",sluid);
+                        intent.putExtra("emp_uid",emp_uid);
+                        intent.putExtra("fa_name",fa_name);
+                        intent.putExtra("fa_status",fa_status);
+                        intent.putExtra("fa_gender",fa_gender);
+                        intent.putExtra("fa_email",fa_email);
+                        intent.putExtra("fa_phone",fa_phone);
+                        intent.putExtra("fa_mariatal_status",fa_mariatal_status);
+                        intent.putExtra("fa_dob",fa_dob);
+                        intent.putExtra("fa_join_date",fa_join_date);
+                        intent.putExtra("fa_experience",fa_experience);
+                        intent.putExtra("fa_qaulification",fa_qualification);
+                        intent.putExtra("fa_subject",fa_subject);
+                        intent.putExtra("fa_certification",fa_certification);
+                        intent.putExtra("fa_previous",fa_previous);
+                        intent.putExtra("fa_address_par",fa_address_par);
+                        intent.putExtra("fa_address_cur",fa_address_cur);
+                        startActivity(intent);
                         finish();
-
+                        //---------------------end-----------------//
                     } else {
                         Toast.makeText(getApplicationContext(), "Invalid School Id and Password", Toast.LENGTH_LONG).show();
                     }
@@ -485,8 +531,9 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
     }
 
     private void emptyInputEditText() {
+        textInputEditTextEmployeeUid.setText(null);
         textInputEditTextName.setText(null);
-        textInputEditTextPassword.setText(null);
+        textInputEditTextStatus.setText(null);
         textInputEditTextEmail.setText(null);
         textInputEditTextPhoneNumber.setText(null);
         textInputEditTextDOB.setText(null);
@@ -496,7 +543,6 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
         textInputEditTextPastWork.setText(null);
         textInputEditTextPreviousAddress.setText(null);
         textInputEditTextCurrentAddress.setText(null);
-        textInputEditTextSchoolId.setText(null);
 
     }
 
@@ -511,18 +557,6 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
     public void onNothingSelected(AdapterView<?> parent) {
     }
 
-    public static boolean isValidPassword(final String password) {
-
-        Pattern pattern;
-        Matcher matcher;
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(password);
-
-        return matcher.matches();
-
-    }
-
     private boolean isValidEmailId(String email) {
 
         return Pattern.compile("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
@@ -533,21 +567,5 @@ public class EditDetailsActivity extends AppCompatActivity implements  AdapterVi
                 + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$").matcher(email).matches();
     }
 
-    private boolean isValidMobile(String fa_phone) {
-        boolean check = false;
-        if (!Pattern.matches("[a-zA-Z]+", fa_phone)) {
-            if (fa_phone.length() < 6 || fa_phone.length() > 13) {
-                if (fa_phone.length() != 10) {
-                    check = false;
-                    textInputEditTextPhoneNumber.setError("Not Valid Number");
-                } else {
-                    check = true;
-                }
-            } else {
-                check = false;
-            }
-            return check;
-        }
-        return check;
-    }
+
 }

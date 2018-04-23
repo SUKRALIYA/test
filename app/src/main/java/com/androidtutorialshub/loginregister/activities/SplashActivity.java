@@ -7,14 +7,11 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.androidtutorialshub.loginregister.FacultyActivity.AddTeacher;
+import com.androidtutorialshub.loginregister.FacultyActivity.EditDetailsActivity;
 import com.androidtutorialshub.loginregister.FacultyActivity.ViewDetailsActivity;
-import com.androidtutorialshub.loginregister.FacultyActivity.ViewFacultyActivity;
+import com.androidtutorialshub.loginregister.FacultyActivity.ViewEmployeeActivity;
 import com.androidtutorialshub.loginregister.R;
-import com.androidtutorialshub.loginregister.SchoolRegistration.ForgetPasswordActivity;
-import com.androidtutorialshub.loginregister.SchoolRegistration.NotificationActivity;
 import com.androidtutorialshub.loginregister.SchoolRegistration.SLoginActivity;
-import com.androidtutorialshub.loginregister.SchoolRegistration.SRegistration;
 
 public class SplashActivity extends Activity {
 
