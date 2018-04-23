@@ -1,10 +1,16 @@
 package com.androidtutorialshub.loginregister.SchoolRegistration;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -23,11 +29,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.androidtutorialshub.loginregister.R;
+import com.androidtutorialshub.loginregister.activities.FacultyDashoardActivity;
+import com.androidtutorialshub.loginregister.activities.MainActivity;
 import com.androidtutorialshub.loginregister.activities.RequestHandler;
 import com.androidtutorialshub.loginregister.model.SchoolName;
 import com.androidtutorialshub.loginregister.model.categoryregist.CategoryLogin;
-import com.androidtutorialshub.loginregister.model.categoryregist.CategoryRegistration;
 import com.androidtutorialshub.loginregister.model.categoryregist.LoginTypeNmae;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -36,6 +53,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static android.media.MediaRecorder.VideoSource.CAMERA;
 
 public class SLoginActivity extends AppCompatActivity implements View.OnClickListener {
     private TextInputEditText textInputEditTextSchoolId;
@@ -49,12 +68,25 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
     ProgressBar progressBar;
     private  String categoriesText;
     private SchoolName selectedLoginType;
+    static final Integer LOCATION = 0x1;
+    static final Integer GPS_SETTINGS = 0x7;
+    LocationRequest mLocationRequest;
+    PendingResult<LocationSettingsResult> result;
+    GoogleApiClient client;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_slogin);
+
+            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION);
+            askForPermission(Manifest.permission.CAMERA,CAMERA);
+
+        client = new GoogleApiClient.Builder(this)
+                .addApi(AppIndex.API)
+                .addApi(LocationServices.API)
+                .build();
         spinner=(Spinner)findViewById(R.id.spinner);
         initViews();
         initListeners();
@@ -72,7 +104,7 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
         show_hide_password = (ImageButton) findViewById(R.id.show_hide_password);
         appCompatButtonLogin = (AppCompatButton) findViewById(R.id.appCompatButtonLogin);
         appCompatTextViewLoginLink = (AppCompatTextView) findViewById(R.id.appCompatTextViewLoginLink);
-        }
+    }
 
     /**
      * This method is to initialize listeners
@@ -111,7 +143,7 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
 
             case R.id.appCompatButtonLogin:
-                registerUser();
+                loginUser();
                 break;
             case R.id.appCompatTextViewLoginLink:
                 Intent intent = new Intent(getApplicationContext(), SRegistration.class);
@@ -131,7 +163,7 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void registerUser() {
+    private void loginUser() {
 
         final String sluid = textInputEditTextSchoolId.getText().toString().trim();
         final String slpassword = textInputEditTextSchoolPassword.getText().toString().trim();
@@ -164,7 +196,7 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
 
         //if it passes all the validations
 
-        class RegisterUser extends AsyncTask<Void, Void, String> {
+        class LoginUser extends AsyncTask<Void, Void, String> {
 
             @Override
             protected void onPreExecute() {
@@ -197,8 +229,8 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
                     JSONObject obj = new JSONObject(s);
 
                     //if no error in response
-                    if (obj.getString("status").equals("1")) {
-                         Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                    if (obj.getString("stat").equals("1")) {
+                        Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
 
                         //getting the user from the response
 
@@ -210,21 +242,18 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
                         editor.putString("Login", "1");
                         editor.putString("message", time);
                         editor.apply();
+
+                        if(obj.getString("status").equals("ORGANIZATION")) {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else if (obj.getString("status").equals("FACULTY")) {
+                            Intent intent = new Intent(getApplicationContext(), FacultyDashoardActivity.class);
+                            startActivity(intent);
+                        }
                         finish();
-
-                        // value nikali json se
-//                        String time = obj.getString("message");
-//                        String id   = obj.getString("sluid");
-
-                     //   Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        // ye value put ki
-                        ////                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//                        intent.putExtra("Time", time);
-//                        intent.putExtra("id", id);
-                      //  startActivity(intent);
-
-
-                    } else {
+                    }
+                    else {
                         Toast.makeText(getApplicationContext(), "Invalid School Id and Password", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -234,7 +263,7 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         //executing the async task
-        RegisterUser ru = new RegisterUser();
+        LoginUser ru = new LoginUser();
         ru.execute();
     }
     private void emptyInputEditText() {
@@ -252,7 +281,7 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
         protected String doInBackground(Void... voids) {
             //creating request handler object
             RequestHandler requestHandler = new RequestHandler();
-            return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=logiNN_type");
+            return requestHandler.sendPostRequest("http://xenottabyte.in/Xenotapp/school_api.php?ACTION=logiN_type");
         }
 
         @Override
@@ -294,4 +323,76 @@ public class SLoginActivity extends AppCompatActivity implements View.OnClickLis
             });
         }
     }
+    //-------------------------------- start gps permission code---------------------------------------------------
+
+    private void askForPermission(String permission, Integer requestCode) {
+        if (ContextCompat.checkSelfPermission(SLoginActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(SLoginActivity.this, permission)) {
+
+                //This is called if user has denied the permission before
+                //In this case I am just asking the permission again
+                ActivityCompat.requestPermissions(SLoginActivity.this, new String[]{permission}, requestCode);
+
+            } else {
+
+                ActivityCompat.requestPermissions(SLoginActivity.this, new String[]{permission}, requestCode);
+            }
+        } else {
+           // Toast.makeText(this, "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED){
+                    askForGPS();
+
+            Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        client.connect();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        client.disconnect();
+    }
+    private void askForGPS(){
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
+        builder.setAlwaysShow(true);
+        result = LocationServices.SettingsApi.checkLocationSettings(client, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        try {
+                            status.startResolutionForResult(SLoginActivity.this, GPS_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        break;
+                }
+            }
+        });
+    }
+    //---------------------------------------------------------end gpspermission code--------------------------------//
+
 }
