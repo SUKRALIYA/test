@@ -3,13 +3,11 @@ package com.androidtutorialshub.loginregister.FacultyActivity;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.activities.RequestHandler;
-import com.androidtutorialshub.loginregister.model.Data;
 import com.androidtutorialshub.loginregister.model.EmployeeData;
 
 import org.json.JSONException;
@@ -34,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class EditDetailsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -89,6 +85,10 @@ public class EditDetailsActivity extends AppCompatActivity implements AdapterVie
         textInputEditTextPastWork = (TextInputEditText) findViewById(R.id.textInputEditTextPastWork);
         textInputEditTextDOB = (TextInputEditText) findViewById(R.id.textInputEditTextDOB);
         textInputEditTextStatus = (TextInputEditText) findViewById(R.id.textInputEditTextStatus);
+        textInputEditTextCertification = findViewById(R.id.textInputEditTextCertification);
+        textInputEditTextQualification = findViewById(R.id.textInputEditTextQualification);
+        textInputEditTextExperience = findViewById(R.id.textInputEditTextExperience);
+        textInputEditTextSubject = findViewById(R.id.textInputEditTextSubject);
         gender = (RadioGroup) findViewById(R.id.gender);
         mariatalStatus = (RadioGroup) findViewById(R.id.mariatalStatus);
         appCompatButtonSubmit = (AppCompatButton) findViewById(R.id.appCompatButtonSubmit);

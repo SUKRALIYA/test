@@ -17,7 +17,9 @@ import android.widget.TextView;
 import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.activities.RequestHandler;
 import com.androidtutorialshub.loginregister.model.Data;
+import com.androidtutorialshub.loginregister.model.EditEmployee;
 import com.androidtutorialshub.loginregister.model.EmployeeData;
+import com.google.gson.Gson;
 
 public class ViewDetailsActivity extends AppCompatActivity {
     public static final String DATA = "Data";
@@ -82,9 +84,6 @@ public class ViewDetailsActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditDetailsActivity.class);
-                intent.putExtra(EMPLOYEEDATA, employeeData);
-                startActivity(intent);
                 EditEmployeeInfo editEmployeeInfo=new EditEmployeeInfo();
                 editEmployeeInfo.execute();
             }
@@ -180,6 +179,11 @@ public class ViewDetailsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Gson gson = new Gson();
+            employeeData = gson.fromJson(s,EditEmployee.class).getmEmloyeeData().get(0);
+            Intent intent = new Intent(getApplicationContext(), EditDetailsActivity.class);
+            intent.putExtra(EMPLOYEEDATA, employeeData);
+            startActivity(intent);
 
         }
     }
